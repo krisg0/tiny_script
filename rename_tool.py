@@ -1,4 +1,5 @@
 import os
+import argparse
 
 def rename_files_first(root_dir, old_text, new_text):
     """
@@ -25,13 +26,17 @@ def rename_files_first(root_dir, old_text, new_text):
                 os.rename(old_dir_path, new_dir_path)
                 print(f'Renamed directory: {old_dir_path} -> {new_dir_path}')
 
-# Example usage
 if __name__ == "__main__":
-    import argparse
+    # Set up argument parsing
     parser = argparse.ArgumentParser(description="Rename files and directories recursively.")
+    
+    # Define the arguments
     parser.add_argument('directory', type=str, help="The root directory where renaming should be applied.")
     parser.add_argument('old_text', type=str, help="The text to be replaced.")
     parser.add_argument('new_text', type=str, help="The new text to replace with.")
-    args = parser.parse_args()
     
+    # Parse the command-line arguments
+    args = parser.parse_args()
+
+    # Call the main function with the parsed arguments
     rename_files_first(args.directory, args.old_text, args.new_text)
