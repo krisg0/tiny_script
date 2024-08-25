@@ -1,5 +1,6 @@
 import os
 import re
+import argparse
 
 def replace_pattern_in_files(root_dir, old_text, new_text):
     # Compile regex pattern with case-insensitive flag
@@ -7,10 +8,9 @@ def replace_pattern_in_files(root_dir, old_text, new_text):
 
     def replacement_function(match):
         """
-        Replace the entire match with the new text while preserving the case of the original text.
+        Replace the matched text with the new text while preserving the case of the original text.
         """
         original_text = match.group(0)
-        # Preserve the overall case of the original text
         if original_text.isupper():
             return new_text.upper()
         elif original_text.istitle():
@@ -18,7 +18,7 @@ def replace_pattern_in_files(root_dir, old_text, new_text):
         elif original_text.islower():
             return new_text.lower()
         else:
-            return new_text  # In case it's already mixed-case or unchanged
+            return new_text
 
     # Traverse directories and process files
     for dirpath, _, filenames in os.walk(root_dir):
@@ -36,8 +36,17 @@ def replace_pattern_in_files(root_dir, old_text, new_text):
             os.replace(temp_file_path, file_path)
             print(f'Processed file: {file_path}')
 
-# Example usage
-root_directory = '/path/to/your/directory'  # Specify the root directory
-old_string = 'Old_Text'  # The text pattern to replace
-new_string = 'new_text'  # The text to replace with
-replace_pattern_in_files(root_directory, old_string, new_string)
+if __name__ == "__main__":
+    # Set up argument parsing
+    parser = argparse.ArgumentParser(description="Replace text pattern in files within a directory recursively.")
+    
+    # Define the arguments
+    parser.add_argument('directory', type=str, help="The root directory where the replacement should be applied.")
+    parser.add_argument('old_text', type=str, help="The text pattern to replace.")
+    parser.add_argument('new_text', type=str, help="The new text that will replace the old text.")
+    
+    # Parse the command-line arguments
+    args = parser.parse_args()
+
+    # Call the main function with the parsed arguments
+    replace_pattern_in_files(args.directory, args.old_text, args.new_text)
