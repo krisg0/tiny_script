@@ -5,7 +5,7 @@ import argparse
 
 def replace_pattern_in_files(root_dir, old_text, new_text):
     # Compile regex pattern with case-insensitive flag
-    regex = re.compile(re.escape(old_text), re.IGNORECASE)
+    regex = re.compile(re.escape(old_text), re.IGNORECASE) #WARNING: re.escape will help you escape all special character in old_text; if this is not wanted, need to remove this call!
 
     def replacement_function(match):
         """
