@@ -1,0 +1,17 @@
+#test network connection speed
+#method 1: Using curl for Download Speed
+curl -o /dev/null http://speedtest.tele2.net/10MB.zip
+#method 2: Using Online Speed Test APIs
+%curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -
+
+#show cpu info
+%lscpu
+
+#nmap scan port
+#Scan for all devices and open ports on a local network:
+%nmap -sP 192.168.1.0/24
+#Scan a website for open ports:
+%nmap www.example.com
+#Detect OS and Services
+%nmap -A 192.168.1.10
+
