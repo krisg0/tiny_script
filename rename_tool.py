@@ -8,7 +8,7 @@ def rename_files_first(root_dir, old_text, new_text):
     then rename directories to avoid issues with path changes.
     """
     # Step 1: Rename files first
-    for dirpath, _, filenames in os.walk(root_dir, topdown=False):
+    for dirpath, _, filenames in os.walk(root_dir, topdown=False): #topdown is must!
         for filename in filenames:
             old_file_path = os.path.join(dirpath, filename)
             new_filename = filename.replace(old_text, new_text)
