@@ -15,6 +15,7 @@ def find_folders_without_files(base_path, excluded_files):
     matching_roots = set()  # Use a set to avoid duplicates
 
     for root, dirs, files in os.walk(base_path):
+        #any is higher-order functions working on iterables
         if not any(file in files for file in excluded_files):  # If a match is found
             matching_roots.add(root)  # Add to the set
 
