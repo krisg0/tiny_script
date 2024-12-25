@@ -3,6 +3,9 @@ import time
 import subprocess
 import argparse
 
+#example usage command:
+#python3 monitor_clipboard.py output.txt --start_marker 0 --end_marker 10 --sleep_time 0.1
+
 def get_clipboard_content():
     """Fetches the content of the Windows clipboard from WSL2."""
     try:
