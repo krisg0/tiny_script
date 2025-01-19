@@ -1,14 +1,10 @@
 import subprocess
 import time
 import argparse
-import keyboard  # Import the keyboard module to detect key presses
-
-#Interactive Mode with Specific Key: If you want to wait for the "Space" key, run the script with --wait_for_key space:
-#python send_to_clipboard.py example.txt --interactive --chunk_size 3 --wait_for_key space
-#Interactive Mode with Any Key: If you just want to wait for any key, use --interactive without --wait_for_key:
-#python send_to_clipboard.py example.txt --interactive --chunk_size 3
-#Non-Interactive Mode with Delay: To use the script with a delay and without interaction:
-#python send_to_clipboard.py example.txt --delay 2 --chunk_size 3
+#Interactive mode: This will process the file in chunks, and after each chunk, it will wait for you to press Enter before proceeding.
+#python3 send_to_clipboard.py example.txt --interactive --chunk_size 3
+#Non-Interactive mode: This will process the file in chunks and wait for a specified delay between each chunk.
+#python3 send_to_clipboard.py example.txt --delay 2 --chunk_size 3
 
 def send_to_clipboard(text):
     """Send text to the clipboard using xclip."""
@@ -18,7 +14,11 @@ def send_to_clipboard(text):
     except Exception as e:
         print(f"Error sending text to clipboard: {e}")
 
-def print_and_send_chunks_to_clipboard(file_path, delay, start_marker=0, chunk_size=3, interactive=False, wait_for_key=None):
+def wait_for_enter():
+    """Wait for the user to press Enter to continue."""
+    input("Press Enter to continue to the next chunk...")
+
+def print_and_send_chunks_to_clipboard(file_path, delay, start_marker=0, chunk_size=3, interactive=False):
     """Print and send a specified number of lines at a time from the file to the clipboard, prepending a marker."""
     try:
         with open(file_path, 'r') as file:
@@ -34,32 +34,27 @@ def print_and_send_chunks_to_clipboard(file_path, delay, start_marker=0, chunk_s
                 # Add marker as the first line
                 chunk_with_marker = f"{marker}\n{chunk}"
                 
-                # Print the chunk with the marker (optional, for debugging)
+                # Print the chunk with the marker
                 print(f"Marker: {marker}")
                 print(chunk_with_marker)
                 
-                # Send the chunk to clipboard
+                # Send the chunk to clipboard (you can replace this with your own clipboard function)
                 send_to_clipboard(chunk_with_marker)
                 
                 # Increment the marker for the next chunk
                 marker += 1
                 
                 if interactive:
-                    if wait_for_key:
-                        print(f"Press '{wait_for_key}' to proceed to the next chunk...")
-                        # Wait for the specified key press (e.g., Space, 'x', 'q', etc.)
-                        keyboard.wait(wait_for_key)
-                    else:
-                        # Wait for any key press before proceeding
-                        print("Press any key to proceed to the next chunk...")
-                        keyboard.read_event()
+                    # Wait for the user to press Enter to continue to the next chunk
+                    wait_for_enter()
                 else:
                     # Wait for the specified delay
                     time.sleep(delay)
-                
+
     except Exception as e:
         print(f"Error processing the file: {e}")
 
+# Main function to run the code
 if __name__ == "__main__":
     # Set up argument parsing
     parser = argparse.ArgumentParser(description="Send file content to clipboard in chunks with markers.")
@@ -67,11 +62,10 @@ if __name__ == "__main__":
     parser.add_argument("--delay", type=float, default=1, help="Delay (in seconds) between sending chunks.")
     parser.add_argument("--start_marker", type=int, default=0, help="The starting marker value.")
     parser.add_argument("--chunk_size", type=int, default=3, help="The number of lines to send per chunk.")
-    parser.add_argument("--interactive", action="store_true", help="Run interactively, waiting for user input before each chunk.")
-    parser.add_argument("--wait_for_key", type=str, help="Specify a key to wait for (e.g., 'space', 'q', 'x').")
+    parser.add_argument("--interactive", action="store_true", help="Run interactively, waiting for Enter before each chunk.")
 
     # Parse arguments
     args = parser.parse_args()
     
     # Call the function with the arguments
-    print_and_send_chunks_to_clipboard(args.file_path, args.delay, args.start_marker, args.chunk_size, args.interactive, args.wait_for_key)
+    print_and_send_chunks_to_clipboard(args.file_path, args.delay, args.start_marker, args.chunk_size, args.interactive)
