@@ -4,11 +4,11 @@ import argparse
 import keyboard  # Import the keyboard module to detect key presses
 
 #Interactive Mode with Specific Key: If you want to wait for the "Space" key, run the script with --wait_for_key space:
-#python send_chunks_to_clipboard.py example.txt --interactive --chunk_size 3 --wait_for_key space
+#python send_to_clipboard.py example.txt --interactive --chunk_size 3 --wait_for_key space
 #Interactive Mode with Any Key: If you just want to wait for any key, use --interactive without --wait_for_key:
-#python send_chunks_to_clipboard.py example.txt --interactive --chunk_size 3
+#python send_to_clipboard.py example.txt --interactive --chunk_size 3
 #Non-Interactive Mode with Delay: To use the script with a delay and without interaction:
-#python send_chunks_to_clipboard.py example.txt --delay 2 --chunk_size 3
+#python send_to_clipboard.py example.txt --delay 2 --chunk_size 3
 
 def send_to_clipboard(text):
     """Send text to the clipboard using xclip."""
